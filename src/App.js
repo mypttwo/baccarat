@@ -6,7 +6,7 @@ import themes from './Utils/themes';
 
 class App extends Component {
   state = {
-    stylePath : themes['pulse'].url
+    stylePath : themes['cerulean'].url
   }
 
   render(){

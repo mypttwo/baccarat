@@ -25,7 +25,38 @@ const entityCount = (entityCode, scoreArray2D) => {
     return numberOfEntities;
 }
 
-const getScoreCardJSX = (props) => {
+const getAnalysisJSX = (scoreArray2D, props) => {
+    const numberOfSingletons = scoreArray2D.filter((arr) => arr.length == 1).length;
+    const numberOfTies = entityCount('T',scoreArray2D);
+    const numberOfPlayerWins = entityCount('P',scoreArray2D);
+    const numberOfBankerWins = entityCount('B',scoreArray2D);
+    return (
+                <div class="card">
+                    <div class="card-header h5">Analysis</div>
+                    <div className="container pb-2">
+                        <div className="row mt-2">
+                            <div className="col">
+                            <ul class="list-group">
+                                <li class="list-group-item">switches {scoreArray2D.length}</li>
+                                <li class="list-group-item">hands {props.scoreHistory.length}</li>
+                                <li class="list-group-item">singletons {numberOfSingletons}</li>
+                            </ul>
+                            </div>
+                            <div className="col">
+                            <ul class="list-group">
+                                <li class="list-group-item">ties {numberOfTies}</li>
+                                <li class="list-group-item">Player wins {numberOfPlayerWins}</li>
+                                <li class="list-group-item">Banker wins {numberOfBankerWins}</li>                    
+                            </ul> 
+                            </div>                            
+                        </div>
+                    </div>
+                </div>        
+    )
+    
+}
+
+const getScoreArray2D = (props) => {
     let scoreArray1D = props.scoreHistory.map((score) => {
         if(score.playerScore > score.bankerScore){
             return 'P';
@@ -54,7 +85,10 @@ const getScoreCardJSX = (props) => {
     if(newArray.length){
         scoreArray2D.push(newArray);
     }
+    return scoreArray2D;
+}
 
+const getScoreCardJSX = (scoreArray2D) => {
     let maxLength = getLongestArrayLength(scoreArray2D);
 
     let strArr = [];
@@ -80,33 +114,33 @@ const getScoreCardJSX = (props) => {
         })
         return <tr key={x}>{rowJsx}</tr>
     })
-    const numberOfSingletons = scoreArray2D.filter((arr) => arr.length == 1).length;
-    const numberOfTies = entityCount('T',scoreArray2D);
-    const numberOfPlayerWins = entityCount('P',scoreArray2D);
-    const numberOfBankerWins = entityCount('B',scoreArray2D);
     
     return (
         <React.Fragment>
+            <div class="card text-center mt-5">
+            <div class="card-header h5">
+                Score
+            </div>
+            <div class="card-body">
             <div className='scoreBox'>
                 <table className='table-sm'>
                     <tbody>{jsx}</tbody>
                 </table>
             </div>
-            <div className='pt-2'>Analysis</div>
-            <div>switches {scoreArray2D.length}</div>
-            <div>hands {props.scoreHistory.length}</div>
-            <div>singletons {numberOfSingletons}</div>
-            <div>ties {numberOfTies}</div>
-            <div>Player wins {numberOfPlayerWins}</div>
-            <div>Banker wins {numberOfBankerWins}</div>
+            </div>
+            </div>            
+            
         </React.Fragment>
     )
 }
 
 const scoreHistory = (props) => {
+    let scoreArray2D = getScoreArray2D(props);
+
     return (
         <React.Fragment>
-            {getScoreCardJSX(props)}
+            {getAnalysisJSX(scoreArray2D, props)}
+            {getScoreCardJSX(scoreArray2D)}
         </React.Fragment>
     )
 }

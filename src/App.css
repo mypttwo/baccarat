@@ -4,44 +4,46 @@
 }
 
 
-.card
-{
-	padding: 10px;
-	border: solid 1px #808080;
-	background-color: white;
+
+
+.pcard {
 	display: inline-block;
-	border-radius: 10px;
-	font-size: 14pt;
+    width: 3.3em;
+    height: 4.6em;
+	background-color: #ffffff;
+	border-radius: 5px;
+	margin: 1rem;
 	text-align: center;
-	color:black;
-	margin: 3px;
+	font-size:1.2rem;
+	-moz-box-shadow: .2em .2em .5em #333;
+    -webkit-box-shadow: .2em .2em .5em #333;
+    box-shadow: .2em .2em .5em #333;
 }
 
 
-.card .value{
-	font-size:15pt;
-	font-family: sans-serif;
+
+.pcard .rank {
+    display: block;
+    line-height: 1;
+	text-align: left;
+	margin-left: .6rem;
+	margin-top: .6rem;
 }
 
-.card .suit
-{
-	background-image: url('card.png');
-	height: 100px;
-	width: 90px;
+.pcard .suit {
+	line-height: .7;
+	font-size:4rem;
 }
 
-.card .diamonds
-{
-	background-position-y: 100px;
+.hearts {
+	color: #ff0000;
 }
-
-.card .hearts
-{
-	background-position-x: 90px;
+.spades {
+	color: #000000;
 }
-
-.card .clubs
-{
-	background-position-x:90px;
-	background-position-y:100px;
+.diams {
+	color: #ff0000;
+}
+.clubs {
+	color: #000000;
 }

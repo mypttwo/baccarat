@@ -109,7 +109,6 @@ const getPlayer3dCard = (playerCards, bankerCards, deck) => {
 }
 
 const executeDeal = (gameState) => {
-    debugger;
     let playerCards = [];
     let bankerCards = [];
 

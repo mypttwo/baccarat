@@ -1,6 +1,6 @@
 // https://www.thatsoftwaredude.com/content/6196/coding-a-card-deck-in-javascript
 const cards = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-const suits = ["diamonds", "hearts", "spades", "clubs"];
+const suits = ["diams", "hearts", "spades", "clubs"];
 
 function getDeck()
 {

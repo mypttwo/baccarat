@@ -31,8 +31,7 @@ class Baccarat extends Component{
             deck : completeDeck
         })
     }
-
-    
+  
 
     deal = () => {
         if(this.state.deck.length < 6){
@@ -60,9 +59,41 @@ class Baccarat extends Component{
         })
     }
 
-    
+    getUsedCardsJSX = () => {
+        return (
+            <React.Fragment>
+                <div class="card text-center">
+                    <div class="card-header h5">
+                        Used Cards
+                    </div>
+                    <div class="card-body">
+                        {this.state.usedCards.map(getCardJSX)}
+                    </div>
+                </div>
+            </React.Fragment>          
+        )
+    }
 
+    getHandFor = (entity) => {
+        let header = 'Banker';
+        let score = this.state.currentScore.bankerScore;
+        let cardJSX = this.state.bankerCards.map(getCardJSX);
+        if(entity === 'P'){
+            header = 'Player';
+            score = this.state.currentScore.playerScore;
+            cardJSX = this.state.playerCards.map(getCardJSX);
+        }
 
+        return (
+            <div class="card text-center">
+                <div class="card-header h6">{header}</div>
+            <div class="card-body">
+                <p class="card-text h6">{score}</p>
+                <div>{cardJSX}</div>
+            </div>                             
+        </div>            
+        )
+    }
 
     render(){
             return (
@@ -75,40 +106,27 @@ class Baccarat extends Component{
                                     <button type="button" className="btn btn-secondary
                                     " onClick={this.newShoe}>New Shoe</button>
                                 </div>
+                                <div>                          
+                                </div>
                             </div>                            
-                        </div>                                                
-                        <div className='row pt-2'>
-                            <div className="col-sm">
-                                <div className='col-sm'>Player</div>
-                                <div className='col-sm'>{this.state.currentScore.playerScore}</div>
-                                {this.state.playerCards.map(getCardJSX)}
-                            </div>
-                            <div className="col-sm">
-                                <div className='col-sm'>Banker</div>
-                                <div className='col-sm'>{this.state.currentScore.bankerScore}</div>
-                                {this.state.bankerCards.map(getCardJSX)}
-                            </div>
-                        </div>
-
-                    </div>
-                    <div className='container'>
-                    <div className='row pt-2'>
-                            <div className="col-sm">Score</div>
-                        </div>
-                        <div className='row'>
+                        </div>     
+                        <div className="row pt-5">
+                            <div className="col">{this.getHandFor('P')}</div>
+                            <div className="col">{this.getHandFor('B')}</div>                            
+                        </div>  
+                        <div className="row pt-5">
                             <div className="col">
-                                <ScoreHistory scoreHistory={this.state.scoreHistory}></ScoreHistory>
-                            </div>                            
-                        </div>
-                    </div>                    
-                    {/* <div className='container'>
-                    <div className='row pt-2'>
-                            <div className="col-sm">Used cards</div>
-                        </div>
-                        <div className='row'>
-                            <div className="col">{this.state.usedCards.map(getCardJSX)}</div>
-                        </div>
-                    </div> */}
+                            <ScoreHistory scoreHistory={this.state.scoreHistory}></ScoreHistory>
+                            </div>
+                        </div> 
+                        <div className="row pt-5">
+                            <div className="col">
+                            {this.getUsedCardsJSX()} 
+                            </div>
+                        </div>                                                                
+                    </div>
+                    
+                                       
                 </React.Fragment>
                 
                 ) 
