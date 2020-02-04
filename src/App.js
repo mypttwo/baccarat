@@ -1,20 +1,17 @@
 import React, {Component} from 'react';
 import './App.css';
 import Baccarat from './Containers/Baccarat/baccarat';
-import themes from './Utils/themes';
+
+import Home from './Containers/Home/home';
 
 
 class App extends Component {
-  state = {
-    stylePath : themes['cerulean'].url
-  }
-
   render(){
     return (
       <React.Fragment>
-        <link rel="stylesheet" type="text/css" href={this.state.stylePath} />
+        
         <div className="App">
-          <Baccarat></Baccarat>
+          <Home />
         </div>
       </React.Fragment>
     );
