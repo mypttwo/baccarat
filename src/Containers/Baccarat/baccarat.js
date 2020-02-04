@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 import {cards, suits, loadDeck, shuffle} from '../../Utils/deck';
 import getCardJSX from '../../Components/card';
-import ScoreHistory from '../../Components/scoreHistory';
+import {scoreHistory as ScoreHistory} from '../../Components/scoreHistory';
 import executeDeal from '../../Utils/dealEngine';
 
 
@@ -125,8 +125,6 @@ class Baccarat extends Component{
                             </div>
                         </div>                                                                
                     </div>
-                    
-                                       
                 </React.Fragment>
                 
                 ) 

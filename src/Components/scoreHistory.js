@@ -1,5 +1,36 @@
 import React from 'react';
 
+import {getScoreArray2D, getAnalysis} from '../Utils/scoreAnalysis';
+
+const getAnalysisJSX = (scoreArray2D, props) => {
+
+    let analysis = getAnalysis(scoreArray2D);
+
+    return (
+            <div class="card">
+                <div class="card-header h5">Analysis</div>
+                <div className="container pb-2">
+                    <div className="row mt-2">
+                        <div className="col">
+                        <ul class="list-group">
+                            <li class="list-group-item">switches {scoreArray2D.length}</li>
+                            <li class="list-group-item">hands {props.scoreHistory.length}</li>
+                            <li class="list-group-item">singletons {analysis.numberOfSingletons}</li>
+                        </ul>
+                        </div>
+                        <div className="col">
+                        <ul class="list-group">
+                            <li class="list-group-item">ties {analysis.numberOfTies}</li>
+                            <li class="list-group-item">Player wins {analysis.numberOfPlayerWins}</li>
+                            <li class="list-group-item">Banker wins {analysis.numberOfBankerWins}</li>                    
+                        </ul> 
+                        </div>                            
+                    </div>
+                </div>
+            </div>        
+    )
+}
+
 const getLongestArrayLength = (array2D) => {
     let max = 0;
     for(let x = 0; x < array2D.length; x++){
@@ -8,84 +39,6 @@ const getLongestArrayLength = (array2D) => {
         }
     }
     return max;
-}
-
-const entityCount = (entityCode, scoreArray2D) => {
-    const arrayEntityCounterReducer = (acc, entry) => {
-        if(entry == entityCode){
-            acc++;
-        }
-        return acc;
-    }
-    const entityCounterReducer = (acc, arr) => {
-        acc = acc + arr.reduce(arrayEntityCounterReducer, 0);
-        return acc;
-    }
-    const numberOfEntities = scoreArray2D.reduce(entityCounterReducer, 0);
-    return numberOfEntities;
-}
-
-const getAnalysisJSX = (scoreArray2D, props) => {
-    const numberOfSingletons = scoreArray2D.filter((arr) => arr.length == 1).length;
-    const numberOfTies = entityCount('T',scoreArray2D);
-    const numberOfPlayerWins = entityCount('P',scoreArray2D);
-    const numberOfBankerWins = entityCount('B',scoreArray2D);
-    return (
-                <div class="card">
-                    <div class="card-header h5">Analysis</div>
-                    <div className="container pb-2">
-                        <div className="row mt-2">
-                            <div className="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">switches {scoreArray2D.length}</li>
-                                <li class="list-group-item">hands {props.scoreHistory.length}</li>
-                                <li class="list-group-item">singletons {numberOfSingletons}</li>
-                            </ul>
-                            </div>
-                            <div className="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">ties {numberOfTies}</li>
-                                <li class="list-group-item">Player wins {numberOfPlayerWins}</li>
-                                <li class="list-group-item">Banker wins {numberOfBankerWins}</li>                    
-                            </ul> 
-                            </div>                            
-                        </div>
-                    </div>
-                </div>        
-    )
-    
-}
-
-const getScoreArray2D = (props) => {
-    let scoreArray1D = props.scoreHistory.map((score) => {
-        if(score.playerScore > score.bankerScore){
-            return 'P';
-        }
-        if(score.playerScore < score.bankerScore){
-            return 'B';
-        }
-        return 'T';
-    });
-    let scoreArray2D = [];
-    let newArray = [];
-    for(let x = 0; x < scoreArray1D.length; x++){
-        if(x == 0){
-            newArray.push(scoreArray1D[x]);
-            continue;
-        }
-        if(scoreArray1D[x] == scoreArray1D[x-1]){
-            newArray.push(scoreArray1D[x]);
-        }
-        else {
-            scoreArray2D.push(newArray.slice());
-            newArray = [];
-            newArray.push(scoreArray1D[x]);
-        }
-    }
-    if(newArray.length){
-        scoreArray2D.push(newArray);
-    }
-    return scoreArray2D;
 }
 
 const getScoreCardJSX = (scoreArray2D) => {
@@ -135,7 +88,7 @@ const getScoreCardJSX = (scoreArray2D) => {
 }
 
 const scoreHistory = (props) => {
-    let scoreArray2D = getScoreArray2D(props);
+    let scoreArray2D = getScoreArray2D(props.scoreHistory);
 
     return (
         <React.Fragment>
@@ -146,4 +99,4 @@ const scoreHistory = (props) => {
 }
 
 
-export default scoreHistory;
+export {scoreHistory};
