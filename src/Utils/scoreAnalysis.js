@@ -45,12 +45,31 @@ const getScoreArray2D = (scoreHistory) => {
     return scoreArray2D;
 }
 
-const getAnalysis = (scoreArray2D) => {
+const getAnalysis = (scoreArray2D, scoreHistory) => {
+
+    const pairCounterReducer = (acc, score) => {
+        if(score.bankerPair){
+            acc.bankerPairCount++;
+        }
+        if(score.playerPair){
+            acc.playerPairCount++;
+        }
+        return acc;
+    }
+
+    let numberOfPairs = {bankerPairCount : 0, playerPairCount : 0};
+
+    if(scoreHistory){
+        numberOfPairs = scoreHistory.reduce(pairCounterReducer, {bankerPairCount : 0, playerPairCount : 0});
+    }
+     
     return{
         numberOfSingletons : scoreArray2D.filter((arr) => arr.length == 1).length,
         numberOfTies : entityCount('T',scoreArray2D),
         numberOfPlayerWins : entityCount('P',scoreArray2D),
         numberOfBankerWins : entityCount('B',scoreArray2D),
+        numberOfPlayerPairs : numberOfPairs.playerPairCount,
+        numberOfBankerPairs : numberOfPairs.bankerPairCount,
     }
 }
 

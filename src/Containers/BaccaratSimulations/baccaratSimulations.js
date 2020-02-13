@@ -6,30 +6,22 @@ import {getScoreArray2D, getAnalysis} from '../../Utils/scoreAnalysis';
 import BaccaratChartSet from '../BaccaratChartSet/baccaratChartSet';
 import {getUpdatedStats} from '../../Utils/statsCalculators';
 
+let emptyStats = {
+    high : 0,
+    low : 1000,
+    average : 0
+}
+
 class BaccaratSimulations extends Component{
     state = {
         analysisList : [],
         noOfShoes : 3,
-        singletonStats : {
-            high : 0,
-            low : 1000,
-            average : 0
-        },
-        tieStats : {
-            high : 0,
-            low : 1000,
-            average : 0
-        },
-        playerWinStats : {
-            high : 0,
-            low : 1000,
-            average : 0
-        },
-        bankerWinStats : {
-            high : 0,
-            low : 1000,
-            average : 0
-        }
+        singletonStats : emptyStats,
+        tieStats : emptyStats,
+        playerWinStats : emptyStats,
+        bankerWinStats : emptyStats,
+        playerPairStats : emptyStats,
+        bankerPairStats : emptyStats
     }
 
     runShoe = () => {
@@ -44,8 +36,9 @@ class BaccaratSimulations extends Component{
                 scoreHistory
             })
         }
+debugger;
         let scoreArray2D = getScoreArray2D(dealResult.scoreHistory);
-        let analysis = getAnalysis(scoreArray2D);
+        let analysis = getAnalysis(scoreArray2D, dealResult.scoreHistory);
 
         let analysisList = this.state.analysisList.slice();
         
@@ -56,6 +49,10 @@ class BaccaratSimulations extends Component{
         let playerWinStats = getUpdatedStats(this.state.playerWinStats, this.state.analysisList.length, analysis, "numberOfPlayerWins");
         let bankerWinStats = getUpdatedStats(this.state.bankerWinStats, this.state.analysisList.length, analysis, "numberOfBankerWins");
 
+        let playerPairStats = getUpdatedStats(this.state.playerPairStats,this.state.analysisList.length, analysis, "numberOfPlayerPairs");
+        let bankerPairStats = getUpdatedStats(this.state.bankerPairStats, this.state.analysisList.length, analysis, "numberOfBankerPairs");
+
+
         analysisList.push(analysis);
 
         this.setState(() => {
@@ -64,7 +61,9 @@ class BaccaratSimulations extends Component{
                 singletonStats : singletonStats,
                 tieStats : tieStats,
                 playerWinStats : playerWinStats,
-                bankerWinStats : bankerWinStats
+                bankerWinStats : bankerWinStats,
+                playerPairStats : playerPairStats,
+                bankerPairStats : bankerPairStats
             };
            });
     }
@@ -80,6 +79,8 @@ class BaccaratSimulations extends Component{
                     <td>{analysis.numberOfTies}</td>
                     <td>{analysis.numberOfPlayerWins}</td>
                     <td>{analysis.numberOfBankerWins}</td>
+                    <td>{analysis.numberOfPlayerPairs}</td>
+                    <td>{analysis.numberOfBankerPairs}</td>                    
                 </tr>
             )
             
@@ -87,11 +88,22 @@ class BaccaratSimulations extends Component{
         return(
             <table class="table table-bordered">
                 <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">Singletons</th>
-                    <th scope="col">Ties</th>
-                    <th scope="col">Player Wins</th>
-                    <th scope="col">Banker Wins</th>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Singletons</th>
+                        <th scope="col">T</th>
+                        <th scope="col" colspan="2">Wins</th>
+                        <th scope="col" colspan="2">Pairs</th>
+                    </tr>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">P</th>
+                        <th scope="col">B</th>
+                        <th scope="col">P</th>
+                        <th scope="col">B</th>                        
+                    </tr>                    
                 </thead>
                 <tbody>
                     {rows}
@@ -117,6 +129,59 @@ class BaccaratSimulations extends Component{
     }
 
     getStats = () => {
+        return(
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">High</th>
+                        <th scope="col">Av</th>
+                        <th scope="col">Low</th>                        
+                    </tr>                                                 
+                </thead>
+                <tbody>
+                <tr>
+                        <th scope="row">Singletons</th>
+                        <td>{this.state.singletonStats.high}</td>
+                        <td>{this.state.singletonStats.average.toFixed(2)}</td>
+                        <td>{this.state.singletonStats.low}</td>                  
+                    </tr>
+                    <tr>
+                        <th scope="row">Ties</th>
+                        <td>{this.state.tieStats.high}</td>
+                        <td>{this.state.tieStats.average.toFixed(2)}</td>
+                        <td>{this.state.tieStats.low}</td>                  
+                    </tr>   
+                    <tr>
+                        <th scope="row">Player Wins</th>
+                        <td>{this.state.playerWinStats.high}</td>
+                        <td>{this.state.playerWinStats.average.toFixed(2)}</td>
+                        <td>{this.state.playerWinStats.low}</td>                  
+                    </tr> 
+                    <tr>
+                        <th scope="row">Banker Wins</th>
+                        <td>{this.state.bankerWinStats.high}</td>
+                        <td>{this.state.bankerWinStats.average.toFixed(2)}</td>
+                        <td>{this.state.bankerWinStats.low}</td>                  
+                    </tr>
+                    <tr>
+                        <th scope="row">Player Pairs</th>
+                        <td>{this.state.playerPairStats.high}</td>
+                        <td>{this.state.playerPairStats.average.toFixed(2)}</td>
+                        <td>{this.state.playerPairStats.low}</td>                  
+                    </tr> 
+                    <tr>
+                        <th scope="row">Banker Pairs</th>
+                        <td>{this.state.bankerPairStats.high}</td>
+                        <td>{this.state.bankerPairStats.average.toFixed(2)}</td>
+                        <td>{this.state.bankerPairStats.low}</td>                  
+                    </tr>                    
+                </tbody>
+            </table>
+        )        
+    }
+
+    getStats_ = () => {
         return (
             <div className="container">
             <div className="row">

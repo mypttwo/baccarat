@@ -4,6 +4,22 @@ import {getScoreArray2D, getAnalysis} from '../Utils/scoreAnalysis';
 
 const getAnalysisJSX = (scoreArray2D, props) => {
 
+    let playerReducer = (accumulatedValue, score) => {
+        if(score.playerPair){
+            accumulatedValue++
+        }
+        return accumulatedValue;
+    }
+    let bankerReducer = (accumulatedValue, score) => {
+        if(score.bankerPair){
+            accumulatedValue++
+        }
+        return accumulatedValue;
+    }
+
+    let playerPairs = props.scoreHistory.reduce(playerReducer, 0);
+    let bankerPairs = props.scoreHistory.reduce(bankerReducer, 0);
+
     let analysis = getAnalysis(scoreArray2D);
 
     return (
@@ -16,13 +32,15 @@ const getAnalysisJSX = (scoreArray2D, props) => {
                             <li class="list-group-item">switches {scoreArray2D.length}</li>
                             <li class="list-group-item">hands {props.scoreHistory.length}</li>
                             <li class="list-group-item">singletons {analysis.numberOfSingletons}</li>
+                            <li class="list-group-item">ties {analysis.numberOfTies}</li>
                         </ul>
                         </div>
                         <div className="col">
                         <ul class="list-group">
-                            <li class="list-group-item">ties {analysis.numberOfTies}</li>
                             <li class="list-group-item">Player wins {analysis.numberOfPlayerWins}</li>
                             <li class="list-group-item">Banker wins {analysis.numberOfBankerWins}</li>                    
+                            <li class="list-group-item">Player Pairs {playerPairs}</li>
+                            <li class="list-group-item">BankerPairs {bankerPairs}</li>
                         </ul> 
                         </div>                            
                     </div>

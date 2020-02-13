@@ -108,6 +108,36 @@ const getPlayer3dCard = (playerCards, bankerCards, deck) => {
     return null;
 }
 
+const updateScoreForPairs = (playerCards, bankerCards, score) => {
+    let playerPair = false;
+    let bankerPair = false;
+    if(playerCards.length > 1){
+        if(playerCards[0].Value == playerCards[1].Value){
+            playerPair = true;
+        } else if(playerCards.length > 2){
+            if(playerCards[1].Value == playerCards[2].Value){
+                playerPair = true;
+            }
+        }
+    }
+
+    if(bankerCards.length > 1){
+        if(bankerCards[0].Value == bankerCards[1].Value){
+            bankerPair = true;
+        } else if(bankerCards.length > 2){
+            if(bankerCards[1].Value == bankerCards[2].Value){
+                bankerPair = true;
+            }
+        }
+    }
+    return {
+        ...score,
+        playerPair,
+        bankerPair
+    }
+
+}
+
 const executeDeal = (gameState) => {
     let playerCards = [];
     let bankerCards = [];
@@ -133,6 +163,7 @@ const executeDeal = (gameState) => {
     }
 
     let currentScore = getScore(playerCards, bankerCards);
+    currentScore = updateScoreForPairs(playerCards, bankerCards, currentScore);
     gameState.scoreHistory.push(currentScore);
 
     return {
